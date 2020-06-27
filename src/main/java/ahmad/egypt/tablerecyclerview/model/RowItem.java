@@ -9,6 +9,7 @@ public class RowItem {
     public RowItem(List<String> cells) {
         this.cells = cells;
     }
+    public RowItem(){this(new ArrayList<String>());}
 
     public List<String> getCells() {
         return cells;
