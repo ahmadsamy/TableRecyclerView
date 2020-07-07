@@ -58,7 +58,7 @@ public class TableRecViewAdapter extends RecyclerView.Adapter<TableRowViewHolder
         });
     }
 
-    private void showCopyDialog(final String content,final Context c){
+    public static void showCopyDialog(final String content,final Context c){
         AlertDialog.Builder b=new AlertDialog.Builder(c);
         b.setMessage(content);
         b.setPositiveButton(R.string.ok,null);
