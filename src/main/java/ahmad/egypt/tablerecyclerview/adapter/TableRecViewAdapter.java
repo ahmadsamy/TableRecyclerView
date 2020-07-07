@@ -39,7 +39,7 @@ public class TableRecViewAdapter extends RecyclerView.Adapter<TableRowViewHolder
     @Override
     public TableRowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rowView= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item, parent,false);
-        return new TableRowViewHolder(rowView,viewType==HEADER);
+        return new TableRowViewHolder(rowView,getMaxColumnCount(),viewType==HEADER);
     }
 
     @Override
@@ -48,30 +48,34 @@ public class TableRecViewAdapter extends RecyclerView.Adapter<TableRowViewHolder
         holder.setCellClickCallBack(cellClickCallBack!=null?cellClickCallBack:new CellClickCallBack(){
             @Override
             public void onCellClick(final String content) {
-                AlertDialog.Builder b=new AlertDialog.Builder(holder.itemView.getContext());
-                b.setMessage(content);
-                b.setPositiveButton(R.string.ok,null);
-                b.setNeutralButton(R.string.copy, new DialogInterface.OnClickListener(){
-
-                    @Override
-                    public void onClick(DialogInterface p1, int p2)
-                    {
-                        ClipboardManager clipboard = (ClipboardManager) holder.itemView.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("cell", content);
-                        clipboard.setPrimaryClip(clip);
-                        p1.dismiss();
-                    }
-
-
-                });
-                b.create().show();
+               showCopyDialog(content,holder.itemView.getContext());
             }
 
             @Override
-            public void onCellClick(boolean head, String content) {
-
+            public void onCellLongClick(String content) {
+                showCopyDialog(String.format("SELECT * FROM %s",content),holder.itemView.getContext());
             }
         });
+    }
+
+    private void showCopyDialog(final String content,final Context c){
+        AlertDialog.Builder b=new AlertDialog.Builder(c);
+        b.setMessage(content);
+        b.setPositiveButton(R.string.ok,null);
+        b.setNeutralButton(R.string.copy, new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface p1, int p2)
+            {
+                ClipboardManager clipboard = (ClipboardManager) c.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("cell", content);
+                clipboard.setPrimaryClip(clip);
+                p1.dismiss();
+            }
+
+
+        });
+        b.create().show();
     }
 
     @Override
@@ -84,6 +88,14 @@ public class TableRecViewAdapter extends RecyclerView.Adapter<TableRowViewHolder
         return rowItems!=null?rowItems.size():0;
     }
 
+    private int getMaxColumnCount(){
+        int c=0;
+        for(int i=0;i<rowItems.size();i++){
+            int x=rowItems.get(i).getCellCount();
+            c=x>c?x:c;
+        }
+        return c;
+    }
 
 
     public void setCellClickCallBack(CellClickCallBack cellClickCallBack) {

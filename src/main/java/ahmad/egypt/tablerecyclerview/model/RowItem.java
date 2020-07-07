@@ -11,6 +11,11 @@ public class RowItem {
     }
     public RowItem(){this(new ArrayList<String>());}
 
+    public int getCellCount()
+    {
+        return this.cells!=null?this.cells.size():0;
+    }
+
     public List<String> getCells() {
         return cells;
     }
