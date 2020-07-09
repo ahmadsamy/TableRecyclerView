@@ -53,7 +53,7 @@ public class TableRecViewAdapter extends RecyclerView.Adapter<TableRowViewHolder
 
             @Override
             public void onCellLongClick(String content) {
-                showCopyDialog(String.format("SELECT * FROM %s",content),holder.itemView.getContext());
+                showCopyDialog(String.format("SELECT * FROM '%s'",content),holder.itemView.getContext());
             }
         });
     }

@@ -12,10 +12,10 @@ import ahmad.egypt.tablerecyclerview.model.RowItem;
 
 public class TableRowViewHolder extends RecyclerView.ViewHolder {
 
-    LinearLayout row;
-    boolean header;
-    CellClickCallBack cellClickCallBack;
-    int columnCount;
+    private LinearLayout row;
+    private boolean header;
+    private CellClickCallBack cellClickCallBack;
+    private int columnCount;
 
     public TableRowViewHolder(View itemView, int columnCount) {
         this(itemView, columnCount, false);
