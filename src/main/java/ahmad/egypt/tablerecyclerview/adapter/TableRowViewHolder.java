@@ -1,5 +1,6 @@
 package ahmad.egypt.tablerecyclerview.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -59,6 +60,7 @@ public class TableRowViewHolder extends RecyclerView.ViewHolder {
 
     private TextView getCell(LinearLayout v) {
         TextView tv = (TextView) LayoutInflater.from(v.getContext()).inflate(R.layout.cell_item, v, false);
+        tv.setTextColor(Color.WHITE);
         return tv;
     }
 
