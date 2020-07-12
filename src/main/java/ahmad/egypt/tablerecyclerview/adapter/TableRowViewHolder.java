@@ -1,14 +1,16 @@
 package ahmad.egypt.tablerecyclerview.adapter;
 
-import android.graphics.Color;
+
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ahmad.egypt.tablerecyclerview.R;
 import ahmad.egypt.tablerecyclerview.model.RowItem;
+import ahmad.egypt.tablerecyclerview.tools.DimenTools;
 
 
 public class TableRowViewHolder extends RecyclerView.ViewHolder {
@@ -16,28 +18,38 @@ public class TableRowViewHolder extends RecyclerView.ViewHolder {
     private LinearLayout row;
     private boolean header;
     private CellClickCallBack cellClickCallBack;
-    private int columnCount;
+    private int[] columnTextMaxLength;
 
-    public TableRowViewHolder(View itemView, int columnCount) {
-        this(itemView, columnCount, false);
+    public TableRowViewHolder(View itemView, int[] columnTextMaxLength) {
+        this(itemView, columnTextMaxLength, false);
     }
 
-    public TableRowViewHolder(@NonNull View itemView, int columnCount, boolean header) {
+    public TableRowViewHolder(@NonNull View itemView, int[] columnTextMaxLength, boolean header) {
         super(itemView);
-        this.row = (LinearLayout) itemView.findViewById(R.id.row_container);
+        this.row = itemView.findViewById(R.id.row_container);
         this.header = header;
-        this.columnCount = columnCount;
+        this.columnTextMaxLength = columnTextMaxLength;
         addColumns();
     }
 
     private void addColumns() {
         TextView tv;
-        for (int i = 0; i < columnCount; i++) {
+        for (int i = 0; i < columnTextMaxLength.length; i++) {
             tv = getCell(row);
+            tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            tv.setWidth(calculateWidth(columnTextMaxLength[i],tv.getTextSize()));
             row.addView(tv);
         }
         if (header)
             row.setBackgroundColor(itemView.getResources().getColor(R.color.table_header_bg_color));
+    }
+
+    private int calculateWidth(int maxLength,float textSize){
+        int measuredWidth=DimenTools.getWidthByTextLength(maxLength,Math.round(textSize));
+        int maxWidth=DimenTools.getDimenValue(itemView.getContext(),R.dimen.max_column_width);
+        int minWidth=DimenTools.getDimenValue(itemView.getContext(),R.dimen.min_column_width);
+        if(measuredWidth>minWidth)return Math.min(measuredWidth,maxWidth);
+        else return minWidth;
     }
 
     public void populateRow(RowItem rowItem) {
@@ -60,7 +72,6 @@ public class TableRowViewHolder extends RecyclerView.ViewHolder {
 
     private TextView getCell(LinearLayout v) {
         TextView tv = (TextView) LayoutInflater.from(v.getContext()).inflate(R.layout.cell_item, v, false);
-        tv.setTextColor(Color.WHITE);
         return tv;
     }
 

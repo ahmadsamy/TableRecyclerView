@@ -39,7 +39,7 @@ public class TableRecViewAdapter extends RecyclerView.Adapter<TableRowViewHolder
     @Override
     public TableRowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rowView= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item, parent,false);
-        return new TableRowViewHolder(rowView,getMaxColumnCount(),viewType==HEADER);
+        return new TableRowViewHolder(rowView,getMaxColumnsTextLength(),viewType==HEADER);
     }
 
     @Override
@@ -90,13 +90,22 @@ public class TableRecViewAdapter extends RecyclerView.Adapter<TableRowViewHolder
 
     private int getMaxColumnCount(){
         int c=0;
-        for(int i=0;i<rowItems.size();i++){
+        for(int i=0;i<getItemCount();i++){
             int x=rowItems.get(i).getCellCount();
             c=x>c?x:c;
         }
         return c;
     }
 
+    private int[] getMaxColumnsTextLength(){
+        int[] lengths=new int[getMaxColumnCount()];
+        for (int i=0;i<getItemCount();i++){
+            for(int j=0;j<rowItems.get(i).getCellCount();j++){
+                lengths[j]=Math.max(rowItems.get(i).getCell(j).length(),lengths[j]);//
+            }
+        }
+        return lengths;
+    }
 
     public void setCellClickCallBack(CellClickCallBack cellClickCallBack) {
         this.cellClickCallBack = cellClickCallBack;
