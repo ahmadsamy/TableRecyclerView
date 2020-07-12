@@ -21,6 +21,7 @@ public class RowItem {
     }
 
     public String getCell(int idx){return (cells !=null&&idx< cells.size())? cells.get(idx):null;}
+    public String getCellNotNull(int idx){return getCell(idx)!=null?getCell(idx):"";}
     private void addCell(String text,int idx){if(cells !=null) cells.add(idx,text);}
     public void addCell(String text){if(cells !=null) cells.add(text);}
     public void addCellAtStart(String text){addCell(text,0);}

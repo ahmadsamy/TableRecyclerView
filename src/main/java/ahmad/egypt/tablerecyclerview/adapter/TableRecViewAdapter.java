@@ -101,7 +101,7 @@ public class TableRecViewAdapter extends RecyclerView.Adapter<TableRowViewHolder
         int[] lengths=new int[getMaxColumnCount()];
         for (int i=0;i<getItemCount();i++){
             for(int j=0;j<rowItems.get(i).getCellCount();j++){
-                lengths[j]=Math.max(rowItems.get(i).getCell(j).length(),lengths[j]);//
+                lengths[j]=Math.max(rowItems.get(i).getCellNotNull(j).length(),lengths[j]);//
             }
         }
         return lengths;
