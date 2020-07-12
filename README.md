@@ -2,6 +2,9 @@
 
 TableRecyclerView is a custom view to display table data in a recyclerview for android.
 
+
+<img src="https://i.ibb.co/1n8tncQ/ezgif-com-crop.gif" alt="ezgif-com-crop" border="0">
+
 ### Installation
 Just download TableRecyclerView directory and include it as a module to your project
 
